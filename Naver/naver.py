@@ -1,5 +1,4 @@
 import requests
-from requests import api
 import apikey
 import json
 
