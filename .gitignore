@@ -1,3 +1,5 @@
 /.vscode
 /Twitter/apikey.py
 /Twitter/__pycache__
+/Kakao/apikey.py
+/Kakao/__pycache__
