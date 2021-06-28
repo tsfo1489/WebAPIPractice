@@ -1,2 +1,3 @@
 /.vscode
-/twitter/apikey.py
+/Twitter/apikey.py
+/Twitter/__pycache__
