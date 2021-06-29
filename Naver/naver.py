@@ -4,14 +4,6 @@ import apikey
 import json
 from datetime import datetime, timedelta
 
-def book_search(book_name : str) :
-    headers = { 'X-Naver-Client-Id' : apikey.client_ID,
-                'X-Naver-Client-Secret' : apikey.client_secret }
-    query = {'query' : '열혈C'}
-
-    res = requests.get('https://openapi.naver.com/v1/search/book.json', params=query, headers=headers)
-    return json.loads(res.text)
-
 def to_timedelta(s : str) :
     tmp = 0
     day = 0
