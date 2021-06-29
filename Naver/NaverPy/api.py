@@ -7,6 +7,18 @@ class API :
     def __init__(self, ClientID : str, ClientSecret : str) :
         self.ClientID = ClientID
         self.ClientSecret = ClientSecret
+    
+    def request(
+        self, method, endpoint, params=None, json_payload=None
+    ) :
+        hds = { 
+            'X-Naver-Client-Id' : self.ClientID,
+            'X-Naver-Client-Secret' : self.ClientSecret 
+        }
+
+        if method == 'GET' :
+            res = requests.get(endpoint, params=params, headers=hds)
+            return json.loads(res.text)
         
     def search_blog(
         self, query : str, display=10, start=1, sort='sim', ext='json'
@@ -25,10 +37,6 @@ class API :
         if not(sort == 'sim' or sort == 'date') :
             raise ArgumentError('\'sort\' arg must be sim or date')
 
-        hds = { 
-            'X-Naver-Client-Id' : self.ClientID,
-            'X-Naver-Client-Secret' : self.ClientSecret 
-        }
         param = {
             'query' : query,
             'display' : display,
@@ -36,7 +44,6 @@ class API :
             'sort' : sort
         }
 
-        res = requests.get(url, headers=hds, params=param)
-        return json.loads(res.text)
+        return self.request('GET', url, param)
 
         
