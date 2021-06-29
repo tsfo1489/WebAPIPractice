@@ -2,6 +2,7 @@ import requests
 import apikey
 import base64
 import json
+import pandas as pd
 
 raw_key = '{}:{}'.format(apikey.consumer_key, apikey.consumer_secret).encode('ascii')
 b64_key = base64.b64encode(raw_key)
@@ -30,7 +31,7 @@ search_headers = {
 search_params = {
     'q':'우한폐렴 OR 코로나',
     'result_type': 'mixed',
-    'count': 1,
+    'count': 10,
     'retryonratelimit':True,
 }
 
@@ -40,6 +41,6 @@ search_res = requests.get(
     params=search_params
 )
 
-res_json = json.loads(search_res.text)
-
-print(res_json)
+res_json = json.loads(search_res.content)
+df = pd.DataFrame(res_json['statuses'])
+print(df)

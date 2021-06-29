@@ -1,4 +1,3 @@
-from requests.sessions import session
 import tweepy
 from tweepy import api
 import apikey
