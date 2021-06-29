@@ -1,6 +1,7 @@
 import requests
 from NaverPy.errors import ArgumentError
 import json
+import xmltodict
 
 class API :
     mainURL = 'https://openapi.naver.com/v1/'
@@ -17,8 +18,8 @@ class API :
         }
 
         if method == 'GET' :
-            res = requests.get(endpoint, params=params, headers=hds)
-            return json.loads(res.text)
+            return requests.get(endpoint, params=params, headers=hds)
+            
         
     def search_blog(
         self, query : str, display=10, start=1, sort='sim', ext='json'
@@ -27,8 +28,10 @@ class API :
     
         if ext == 'json' :
             url += 'json'
-        else :
+        elif ext == 'xml' :
             url += 'xml'
+        else :
+            raise ArgumentError('\'ext\' must be json or xml')
 
         if display > 100 or display < 1:
             raise ArgumentError('\'display\' arg must be between 1 and 100')
@@ -43,7 +46,12 @@ class API :
             'start' : start,
             'sort' : sort
         }
+        res = self.request('GET', url, param)
 
-        return self.request('GET', url, param)
+        if ext == 'json' :
+            return json.loads(res.text)
+        else :
+            return json.loads(json.dumps(xmltodict.parse(res.text), ensure_ascii=False))
+
 
         
