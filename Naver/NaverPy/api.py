@@ -1,20 +1,20 @@
 import requests
 from NaverPy.errors import ArgumentError, InternalServerError
+from NaverPy.auth import Auth
 import json
 import xmltodict
 
 class API :
     mainURL = 'https://openapi.naver.com/v1/'
-    def __init__(self, ClientID : str, ClientSecret : str) :
-        self.ClientID = ClientID
-        self.ClientSecret = ClientSecret
+    def __init__(self, auth : Auth) :
+        self.auth = auth
     
     def request(
         self, method, endpoint, params=None, json_payload=None
     ) :
         hds = { 
-            'X-Naver-Client-Id' : self.ClientID,
-            'X-Naver-Client-Secret' : self.ClientSecret 
+            'X-Naver-Client-Id' : self.auth.ClientID,
+            'X-Naver-Client-Secret' : self.auth.ClientSecret 
         }
 
         if method == 'GET' :
@@ -55,10 +55,12 @@ class API :
         
         if res.status_code != 200 :
             if res.status_code == 400 :
-                raise ArgumentError(ans['errMsg'])
+                raise ArgumentError(ans['errorMessage'])
+            if res.status_code == 401 : 
+                raise ArgumentError(ans['errorMessage'])
             if res.status_code == 500 :
                 raise InternalServerError()
-            raise Exception(ans['errMsg'])
+            raise Exception(ans['errorMessage'])
 
         return ans
 
@@ -70,9 +72,29 @@ class API :
 
         ans = json.loads(res.text)
         
-        if res.status_code == 400 :
-            raise ArgumentError(ans['errMsg'])
-        if res.status_code == 500 :
-            raise InternalServerError()
+        if res.status_code != 200 :
+            if res.status_code == 400 :
+                raise ArgumentError(ans['errMsg'])
+            if res.status_code == 401 : 
+                raise ArgumentError(ans['errMsg'])
+            if res.status_code == 500 :
+                raise InternalServerError()
+        
+        return ans
+    
+    def ShortURL(self, url) :
+        endpoint = self.mainURL + 'util/shorturl.json'
+        res = self.request('GET', endpoint, {'url' : url})
+
+        ans = json.loads(res.text)
+        
+        if res.status_code != 200 :
+            if res.status_code == 400 :
+                raise ArgumentError(ans['errorMessage'])
+            if res.status_code == 401 : 
+                raise ArgumentError(ans['errorMessage'])
+            if res.status_code == 500 :
+                raise InternalServerError()
+            raise Exception(ans['errorMessage'])
         
         return ans
