@@ -1,5 +1,5 @@
 import requests
-from NaverPy.errors import ArgumentError
+from NaverPy.errors import ArgumentError, InternalServerError
 import json
 import xmltodict
 
@@ -49,7 +49,7 @@ class API :
         res = self.request('GET', url, param)
 
         if res.status_code == 400 :
-            raise ArgumentError('Wrong Argument {}'.format(param))
+            raise ArgumentError('Wrong Argument in {}'.format(param))
 
         if ext == 'json' :
             return json.loads(res.text)
@@ -61,4 +61,8 @@ class API :
     ) :
         url = self.mainURL + 'datalab/search'
         res = self.request('POST', url, json_payload=params)
+        if res.status_code == 400 :
+            raise ArgumentError('Wrong Argument in {}'.format(params))
+        if res.status_code == 500 :
+            raise InternalServerError('Server Error, Please report error to Developer Forum \'https://developers.naver.com/forum\'')
         return json.loads(res.text)

@@ -15,10 +15,11 @@ dljson = DLTrendparam()
 
 dljson.AddKeywordGroup('한글', ['한글', 'Korean'])
 dljson.AddKeywordGroup('웹툰', ['작가', '장르'])
-dljson.SetPeriodPrev(datetime.now(), '7d')
+dljson.SetPeriodNext(datetime.now(), '1y')
 dljson.SetAgeRange(30, 49)
 dljson.SetGender('m')
 dljson.SetDevice('mo')
+dljson['timeUnit'] = 'week'
 
 print(dljson)
 
