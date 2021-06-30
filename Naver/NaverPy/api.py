@@ -61,5 +61,4 @@ class API :
     ) :
         url = self.mainURL + 'datalab/search'
         res = self.request('POST', url, json_payload=params)
-
         return json.loads(res.text)

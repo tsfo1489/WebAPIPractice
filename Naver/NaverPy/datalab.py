@@ -27,7 +27,10 @@ def to_timedelta(s : str) :
             tmp = 0
     return timedelta(day+(year*12+month)*30)
 
-class DLparam(dict) :
+class DLTrendparam(dict) :
+    '''
+        For Datalab Trend Search Parameter
+    '''
     def __init__(self) :
         now_date = datetime.now()
         self['startDate'] = (now_date - timedelta(days=1)).strftime('%Y-%m-%d')
