@@ -48,21 +48,31 @@ class API :
         param.update(args)
         res = self.request('GET', url, param)
 
-        if res.status_code == 400 :
-            raise ArgumentError('Wrong Argument in {}'.format(param))
-
         if ext == 'json' :
-            return json.loads(res.text)
+            ans = json.loads(res.text)
         else :
-            return self.xml_to_json(xmltodict.parse(res.text))
+            ans = self.xml_to_json(xmltodict.parse(res.text))
+        
+        if res.status_code != 200 :
+            if res.status_code == 400 :
+                raise ArgumentError(ans['errMsg'])
+            if res.status_code == 500 :
+                raise InternalServerError()
+            raise Exception(ans['errMsg'])
+
+        return ans
 
     def DatalabSearch(
         self, params
     ) :
         url = self.mainURL + 'datalab/search'
         res = self.request('POST', url, json_payload=params)
+
+        ans = json.loads(res.text)
+        
         if res.status_code == 400 :
-            raise ArgumentError('Wrong Argument in {}'.format(params))
+            raise ArgumentError(ans['errMsg'])
         if res.status_code == 500 :
-            raise InternalServerError('Server Error, Please report error to Developer Forum \'https://developers.naver.com/forum\'')
-        return json.loads(res.text)
+            raise InternalServerError()
+        
+        return ans

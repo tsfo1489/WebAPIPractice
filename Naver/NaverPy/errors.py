@@ -6,3 +6,5 @@ class ArgumentError(NaverPyException) :
 
 class InternalServerError(NaverPyException) :
     '''Exception For Internal Server Error'''
+    def __init__(self, *args: object) -> None:
+        super().__init__('Server Error, Please report error to Developer Forum \'https://developers.naver.com/forum\'')

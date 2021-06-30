@@ -21,8 +21,5 @@ dljson.SetGender('m')
 dljson.SetDevice('mo')
 dljson['timeUnit'] = 'week'
 
-print(dljson)
-
-
 f_jso = open('json.json', 'w', encoding='utf-8')
 f_jso.write(json.dumps(api.DatalabSearch(dljson), ensure_ascii=False))
