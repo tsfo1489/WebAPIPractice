@@ -30,10 +30,10 @@ class API :
         temp_json['items'] = raw_xml['item']
         return temp_json
     
-    def __search_get(
-        self, endpoint, query, ext, args
+    def search(
+        self, target, query, ext, args
     ) :
-        url = self.mainURL + endpoint
+        url = self.mainURL + 'search/' + target
 
         if ext == 'json' :
             url += '.json'
@@ -53,55 +53,3 @@ class API :
             return json.loads(res.text)
         else :
             return self.xml_to_json(xmltodict.parse(res.text))
-
-
-    def search_blog(
-        self, query : str, display=10, start=1, sort='sim', ext='json'
-    ) :
-        args = {
-            'display' : display,
-            'start' : start,
-            'sort' : sort
-        }
-        try :
-            return self.__search_get('search/blog', query, ext, args)
-        except Exception: 
-            raise
-
-    def search_news(
-        self, query : str, display=10, start=1, sort='sim', ext='json'
-    ) :
-        args = {
-            'display' : display,
-            'start' : start,
-            'sort' : sort
-        }
-        try :
-            return self.__search_get('search/news', query, ext, args)
-        except Exception: 
-            raise
-            
-    def search_book(
-        self, query : str, display=10, start=1, sort='sim', ext='json'
-    ) :
-        args = {
-            'display' : display,
-            'start' : start,
-            'sort' : sort
-        }
-        try :
-            return self.__search_get('search/book', query, ext, args)
-        except Exception: 
-            raise
-
-    def search_encyc(
-        self, query : str, display=10, start=1, ext='json'
-    ) :
-        args = {
-            'display' : display,
-            'start' : start
-        }
-        try :
-            return self.__search_get('search/encyc', query, ext, args)
-        except Exception: 
-            raise
