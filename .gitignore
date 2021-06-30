@@ -6,3 +6,4 @@
 /Naver/apikey.py
 /Naver/__pycache__
 /Naver/NaverPy/__pycache__
+*.json
