@@ -19,6 +19,8 @@ class API :
 
         if method == 'GET' :
             return requests.get(endpoint, params=params, headers=hds)
+        if method == 'POST' :
+            return requests.post(endpoint, json=json_payload, headers=hds)
             
     def xml_to_json(self, xml : dict) -> dict :
         temp_json = {}
@@ -30,7 +32,7 @@ class API :
         temp_json['items'] = raw_xml['item']
         return temp_json
     
-    def search(
+    def Search(
         self, target, query, ext, args
     ) :
         url = self.mainURL + 'search/' + target
@@ -53,3 +55,11 @@ class API :
             return json.loads(res.text)
         else :
             return self.xml_to_json(xmltodict.parse(res.text))
+
+    def DatalabSearch(
+        self, params
+    ) :
+        url = self.mainURL + 'datalab/search'
+        res = self.request('POST', url, json_payload=params)
+
+        return json.loads(res.text)
