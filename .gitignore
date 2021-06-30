@@ -4,6 +4,7 @@
 /Kakao/apikey.py
 /Kakao/__pycache__
 /Naver/apikey.py
+/Naver/test.py
 /Naver/__pycache__
 /Naver/NaverPy/__pycache__
 *.json
