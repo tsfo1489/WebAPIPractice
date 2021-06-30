@@ -81,7 +81,25 @@ class API :
                 raise InternalServerError()
         
         return ans
-    
+    '''
+    def DatalabShopping(
+        self, params
+    ) :
+        url = self.mainURL + 'datalab/shopping'
+        res = self.request('POST', url, json_payload=params)
+
+        ans = json.loads(res.text)
+        
+        if res.status_code != 200 :
+            if res.status_code == 400 :
+                raise ArgumentError(ans['errMsg'])
+            if res.status_code == 401 : 
+                raise ArgumentError(ans['errMsg'])
+            if res.status_code == 500 :
+                raise InternalServerError()
+        
+        return ans
+    '''
     def ShortURL(self, url) :
         endpoint = self.mainURL + 'util/shorturl.json'
         res = self.request('GET', endpoint, {'url' : url})

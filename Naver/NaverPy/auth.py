@@ -13,6 +13,7 @@ datalab_search_tc = {
         }
     ]
 }
+
 datalab_shopping_tc = {
     "startDate": "2017-08-01",
     "endDate": "2017-08-30",
@@ -43,12 +44,14 @@ class Auth :
             check_dict['datalab']['Search'] = False
 
         '''데이터랩(쇼핑인사이트) 테스트'''
+        '''
         res = requests.post(mainURL + 'datalab/shopping/categories', headers=hds, json=datalab_shopping_tc)
         if res.status_code == 200 :
             check_dict['datalab']['Shopping'] = True
         else :
             check_dict['datalab']['Shopping'] = False
-
+        '''
+        
         '''검색 API 테스트'''
         res = requests.get(mainURL + 'search/blog.json', {'query' : 'Test', 'display' : 1}, headers=hds)
         if res.status_code == 200 :
