@@ -31,10 +31,10 @@ class API :
         return temp_json
     
     def __search_get(
-        self, endpoint, query, display, start, sort, ext
+        self, endpoint, query, ext, args
     ) :
         url = self.mainURL + endpoint
-    
+
         if ext == 'json' :
             url += '.json'
         elif ext == 'xml' :
@@ -42,20 +42,12 @@ class API :
         else :
             raise ArgumentError('\'ext\' must be json or xml')
 
-        if display > 100 or display < 1:
-            raise ArgumentError('\'display\' arg must be between 1 and 100')
-        if start < 1 or start > 1000 :
-            raise ArgumentError('\'start\' arg must be between 1 and 1000')
-        if not(sort == 'sim' or sort == 'date') and not (sort is None):
-            raise ArgumentError('\'sort\' arg must be sim or date')
-
-        param = {
-            'query' : query,
-            'display' : display,
-            'start' : start,
-            'sort' : sort
-        }
+        param = {'query' : query}
+        param.update(args)
         res = self.request('GET', url, param)
+
+        if res.status_code == 400 :
+            raise ArgumentError('Wrong Argument {}'.format(param))
 
         if ext == 'json' :
             return json.loads(res.text)
@@ -66,31 +58,50 @@ class API :
     def search_blog(
         self, query : str, display=10, start=1, sort='sim', ext='json'
     ) :
+        args = {
+            'display' : display,
+            'start' : start,
+            'sort' : sort
+        }
         try :
-            return self.__search_get('search/blog', query, display, start, sort, ext)
+            return self.__search_get('search/blog', query, ext, args)
         except Exception: 
             raise
 
     def search_news(
         self, query : str, display=10, start=1, sort='sim', ext='json'
     ) :
+        args = {
+            'display' : display,
+            'start' : start,
+            'sort' : sort
+        }
         try :
-            return self.__search_get('search/news', query, display, start, sort, ext)
+            return self.__search_get('search/news', query, ext, args)
         except Exception: 
             raise
             
     def search_book(
         self, query : str, display=10, start=1, sort='sim', ext='json'
     ) :
+        args = {
+            'display' : display,
+            'start' : start,
+            'sort' : sort
+        }
         try :
-            return self.__search_get('search/book', query, display, start, sort, ext)
+            return self.__search_get('search/book', query, ext, args)
         except Exception: 
             raise
 
     def search_encyc(
         self, query : str, display=10, start=1, ext='json'
     ) :
+        args = {
+            'display' : display,
+            'start' : start
+        }
         try :
-            return self.__search_get('search/encyc', query, display, start, None, ext)
+            return self.__search_get('search/encyc', query, ext, args)
         except Exception: 
             raise
